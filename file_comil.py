@@ -1,21 +1,23 @@
-file_list = ['1.txt', '2.txt', '3.txt']
-a_list = []
-
-
-def line_count(file_name):
-    count = 0
-    with open(file_name, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-        return lines, file_name, len(lines)
-
-
-for file in file_list:
-    a = line_count(file)
-    a_list.append(a)
-
+import os
+file_list = os.listdir('files')
+txt_list = []
+grand_dict = {}
+for files in file_list:
+    if files.endswith('.txt'):
+        txt_list.append(files)
+for file in txt_list:
+    with open(os.path.join('files', file), 'r', encoding='utf-8') as f:
+        content = f.read()
+        grand_dict[file] = len(content)
+sorted_dict = dict(sorted(grand_dict.items(), key=lambda item: item[1]))
 with open('compil.txt', 'w', encoding='utf-8') as compil_f:
-    for item in a_list:
-        compil_f.write(f"{item[1]}\n{str(item[2])}\n")
-        compil_f.writelines(item[0])
+    for key, value in sorted_dict.items():
+        with open(os.path.join('files', key), 'r', encoding='utf-8') as f:
+            content = f.read()
+            compil_f.write(f"{key}\n{value}\n")
+            compil_f.write(content)
+            compil_f.write('\n\n')
+
+
 
 
